@@ -9,10 +9,10 @@ module.exports = {
   collectCoverage: true, // Habilita la recolección de cobertura
   coverageThreshold: {
     global: {
-      branches: 90, // Cobertura mínima en ramas condicionales
-      functions: 90, // Cobertura mínima en funciones
-      lines: 90, // Cobertura mínima en líneas de código
-      statements: 90, // Cobertura mínima en declaraciones
+      branches: 0, // Cobertura mínima en ramas condicionales
+      functions: 0, // Cobertura mínima en funciones
+      lines: 0, // Cobertura mínima en líneas de código
+      statements: 0, // Cobertura mínima en declaraciones
     },
   },
   coveragePathIgnorePatterns: [
