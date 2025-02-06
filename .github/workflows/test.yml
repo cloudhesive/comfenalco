@@ -16,11 +16,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22 # Ajusta según tu versión
+          node-version: 22 # Asegúrate de usar la versión correcta
+
+      - name: Enable Corepack (pnpm)
+        run: corepack enable
 
       - name: Install dependencies
-        run: pnpm install # Usa 'pnpm install' si usas pnpm
+        run: pnpm install --frozen-lockfile
 
       - name: Run Jest tests
-        run: pnpm test:backend # Asegúrate de que 'test' en package.json ejecuta Jest
-
+        run: pnpm test:backend
