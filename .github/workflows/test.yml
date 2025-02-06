@@ -3,7 +3,7 @@ name: Run Jest Tests Before Merge
 on:
   pull_request:
     branches:
-      - main # Cambia esto si el merge es hacia otra rama
+      - main # Cambia si es otra rama de destino
 
 jobs:
   test:
@@ -16,7 +16,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22 # Asegúrate de usar la versión correcta
+          node-version: 22 # Usa la versión deseada
+
+      - name: Update Corepack to latest
+        run: npm install -g corepack@latest # Actualiza Corepack
 
       - name: Enable Corepack (pnpm)
         run: corepack enable
