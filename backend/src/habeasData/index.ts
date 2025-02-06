@@ -3,7 +3,7 @@ import { habeasData } from "./habeasData.js";
 
 interface event {
   body: {
-    parametros: string; // ?'AfiliadoNumeroIdentificacion=numero' ? 'BeneficiarioNumeroIdentificacion=numero' s
+    parametros: string; // ?'AfiliadoNumeroIdentificacion=numero' ? 'BeneficiarioNumeroIdentificacion=numero'
   };
 }
 
