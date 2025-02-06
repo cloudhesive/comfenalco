@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "test:backend": "pnpm --filter backend test",
     "build:backend": "pnpm --filter backend build",
     "build:infra": "pnpm --filter infra build",
-    "test": "pnpm --filter test test",
     "build": "pnpm build:backend && pnpm build:infra"
   },
   "keywords": [],
