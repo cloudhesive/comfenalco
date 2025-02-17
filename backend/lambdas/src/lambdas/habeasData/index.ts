@@ -26,7 +26,7 @@ export const handler = async (event: APIGatewayProxyEvent, context: Context): Pr
     });
     return {
       statusCode: 200,
-      body: JSON.stringify({ registrarHuella }),
+      body: JSON.stringify({ registroHuella }),
     };
   } catch (error) {
     return errorResponse(error);

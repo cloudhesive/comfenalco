@@ -16,12 +16,12 @@ export const lambdas: LambdaConfig[] = [
     }),
   },
   {
-    name: "VerificarContactoFunction",
-    description: "Lambda para verificar el contacto",
+    name: "RegistrarHuellaFunction",
+    description: "Lambda para Registro de llamadas",
     runtime: aws_lambda.Runtime.NODEJS_LATEST,
-    handler: "lambdas/verificarContacto/index.handler",
+    handler: "lambdas/registrarHuella/index.handler",
     code: aws_lambda.Code.fromAsset(path.join(__dirname, "../../../../backend/build/"), {
-      exclude: ["lambdas/habeasData/**"],
+      exclude: ["lambdas/verificarContacto/**"],
     }),
   },
 ];
