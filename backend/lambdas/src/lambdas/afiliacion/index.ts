@@ -11,14 +11,14 @@ export const handler = async (
     const body = validarEvento(event);
     const { AfiliadoNumeroIdentificacion, AfiliadoTipoIdentificacion } = body;
     const { access_token } = await login();
-    const { status, data } = await trabajadorEstado({
+    const dataTrabajador = await trabajadorEstado({
       AfiliadoNumeroIdentificacion,
       AfiliadoTipoIdentificacion,
       token: access_token,
     });
     return {
-      statusCode: status,
-      body: JSON.stringify({ data }),
+      statusCode: 200,
+      body: JSON.stringify(dataTrabajador),
     };
   } catch (error) {
     return errorResponse(error);
