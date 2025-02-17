@@ -9,7 +9,7 @@ export class LambdaStack extends cdk.Stack {
 
     for (const lambdaConfig of lambdas) {
       const lambdaFunction = new lambda.Function(this, lambdaConfig.name, {
-        runtime: lambda.Runtime.NODEJS_LATEST,
+        runtime: lambdaConfig.runtime,
         description: lambdaConfig.description,
         functionName: lambdaConfig.name,
         handler: lambdaConfig.handler,

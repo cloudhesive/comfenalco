@@ -1,22 +1,36 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.registrarHuella = void 0;
-const registrarHuella = async () => {
+const customError_1 = require("../../class/customError");
+const registrarHuella = async ({ id_llamada, identificacion, menu_id, tipo_identificacion, tratamiento_dato_id, token, }) => {
     const raw = JSON.stringify({
-        id_llamada: "string",
-        identificacion: "string",
-        menu_id: 0,
-        tipo_identificacion: "string",
-        tratamiento_dato_id: 0,
+        id_llamada,
+        identificacion,
+        menu_id,
+        tipo_identificacion,
+        tratamiento_dato_id,
     });
     const requestOptions = {
         method: "POST",
         body: raw,
         redirect: "follow",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
     };
     try {
-        const registrado = await fetch("https://comfenalcoquindio.online:9090/api/comfenalco/registrar_huella", requestOptions);
+        const response = await fetch("https://comfenalcoquindio.online:9090/api/comfenalco/registrar_huella", requestOptions);
+        if (!response.ok) {
+            throw new customError_1.CustomError("Error al registrar huella", 400);
+        }
+        const registrado = await response.json();
+        return registrado;
     }
-    catch (error) { }
+    catch (error) {
+        if (error instanceof customError_1.CustomError) {
+            throw new customError_1.CustomError(error.message, error.statusCode);
+        }
+        throw new customError_1.CustomError("Error al registrar huella", 500);
+    }
 };
 exports.registrarHuella = registrarHuella;

@@ -1,5 +1,4 @@
 import type { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { CustomError } from "../../class/customError";
 import { login } from "../../auth/login";
 import { verificarContacto } from "../../api/verificarContacto/verificarContacto";
 import { errorResponse } from "../../utils/errorResponse";
