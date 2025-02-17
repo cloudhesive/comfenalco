@@ -34,7 +34,9 @@ const getInfo = async ({ parametros, token }) => {
         if (error instanceof customError_js_1.CustomError) {
             throw new customError_js_1.CustomError(error.message, error.statusCode);
         }
-        throw new customError_js_1.CustomError("Fallo en el servidor de login", 500);
+        else {
+            throw new customError_js_1.CustomError("Fallo en el servidor de login", 500);
+        }
     }
 };
 exports.getInfo = getInfo;

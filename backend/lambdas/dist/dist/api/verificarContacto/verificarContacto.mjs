@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.verificarContacto = void 0;
-const customError_js_1 = require("../../class/customError.js");
-const verificarContacto = async ({ AfiliadoCelular, AfiliadoNumeroIdentificacion, AfiliadoTipoIdentificacion, token, }) => {
+const customError_js_1 = require("../../class/customError.mjs");
+const verificarContacto = async ({ AfiliadoCelular, AfiliadoNumeroIdentificacion, AfiliadoTipoIdentificacion, token }) => {
     const requestOptions = {
         method: "GET",
         headers: {
@@ -23,7 +23,9 @@ const verificarContacto = async ({ AfiliadoCelular, AfiliadoNumeroIdentificacion
         if (error instanceof customError_js_1.CustomError) {
             throw new customError_js_1.CustomError(error.message, error.statusCode);
         }
-        throw new customError_js_1.CustomError("Fallo en el servidor de login", 500);
+        else {
+            throw new customError_js_1.CustomError("Fallo en el servidor de login", 500);
+        }
     }
 };
 exports.verificarContacto = verificarContacto;

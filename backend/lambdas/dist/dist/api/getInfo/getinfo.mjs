@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getInfo = void 0;
-const customError_js_1 = require("../../class/customError.js");
+const customError_js_1 = require("../../class/customError.mjs");
 const getInfo = async ({ parametros, token }) => {
     const URL = process.env.URL || "example.api/";
     const requestOptions = {
@@ -34,7 +34,9 @@ const getInfo = async ({ parametros, token }) => {
         if (error instanceof customError_js_1.CustomError) {
             throw new customError_js_1.CustomError(error.message, error.statusCode);
         }
-        throw new customError_js_1.CustomError("Fallo en el servidor de login", 500);
+        else {
+            throw new customError_js_1.CustomError("Fallo en el servidor de login", 500);
+        }
     }
 };
 exports.getInfo = getInfo;
