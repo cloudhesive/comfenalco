@@ -13,6 +13,9 @@ interface trabajadorEstadoResponseI {
   trb_identificacion: string;
 }
 
+const URL =
+  process.env.URL || "https://comfenalcoquindio.online:9090/api/comfenalco/";
+
 export const trabajadorEstado = async ({
   AfiliadoNumeroIdentificacion,
   AfiliadoTipoIdentificacion,
@@ -28,7 +31,7 @@ export const trabajadorEstado = async ({
   };
   try {
     const response = await fetch(
-      `https://comfenalcoquindio.online:9090/api/comfenalco/trabajador_estado?identificacion=${AfiliadoNumeroIdentificacion}&tipo_identificacion=${AfiliadoTipoIdentificacion}`,
+      `${URL}trabajador_estado?identificacion=${AfiliadoNumeroIdentificacion}&tipo_identificacion=${AfiliadoTipoIdentificacion}`,
       requestOptions,
     );
     if (response.status === 204) {
