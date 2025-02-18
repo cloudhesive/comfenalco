@@ -14,7 +14,7 @@ export const lambdas: LambdaConfig[] = [
     code: aws_lambda.Code.fromAsset(
       path.join(__dirname, "../../../../backend/build/"),
       {
-        exclude: ["lambdas/habeasData/**"],
+        exclude: ["lambdas/habeasData/**", "lambdas/estadoAfiliacion/**"],
       },
     ),
   },
@@ -26,7 +26,7 @@ export const lambdas: LambdaConfig[] = [
     code: aws_lambda.Code.fromAsset(
       path.join(__dirname, "../../../../backend/build/"),
       {
-        exclude: ["lambdas/verificarContacto/**"],
+        exclude: ["lambdas/verificarContacto/**", "lambdas/estadoAfiliacion/**"],
       },
     ),
   },
