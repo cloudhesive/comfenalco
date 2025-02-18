@@ -14,7 +14,11 @@ export const lambdas: LambdaConfig[] = [
     code: aws_lambda.Code.fromAsset(
       path.join(__dirname, "../../../../backend/build/"),
       {
-        exclude: ["lambdas/habeasData/**", "lambdas/estadoAfiliacion/**"],
+        exclude: [
+          "lambdas/habeasData/**",
+          "lambdas/estadoAfiliacion/**",
+          "lambdas/categoriaAfiliacion/**",
+        ],
       },
     ),
   },
@@ -26,7 +30,11 @@ export const lambdas: LambdaConfig[] = [
     code: aws_lambda.Code.fromAsset(
       path.join(__dirname, "../../../../backend/build/"),
       {
-        exclude: ["lambdas/verificarContacto/**", "lambdas/estadoAfiliacion/**"],
+        exclude: [
+          "lambdas/verificarContacto/**",
+          "lambdas/estadoAfiliacion/**",
+          "lambdas/categoriaAfiliacion/**",
+        ],
       },
     ),
   },
@@ -38,7 +46,27 @@ export const lambdas: LambdaConfig[] = [
     code: aws_lambda.Code.fromAsset(
       path.join(__dirname, "../../../../backend/build/"),
       {
-        exclude: ["lambdas/verificarContacto/**", "lambdas/habeasData/**"],
+        exclude: [
+          "lambdas/verificarContacto/**",
+          "lambdas/habeasData/**",
+          "lambdas/categoriaAfiliacion/**",
+        ],
+      },
+    ),
+  },
+  {
+    name: "CategoriaAfiliacioFunction",
+    description: "Lambda para retornar la categoria del afiliado",
+    runtime: aws_lambda.Runtime.NODEJS_22_X,
+    handler: "lambdas/categoriaAfiliacion/index.handler",
+    code: aws_lambda.Code.fromAsset(
+      path.join(__dirname, "../../../../backend/build/"),
+      {
+        exclude: [
+          "lambdas/verificarContacto/**",
+          "lambdas/habeasData/**",
+          "lambdas/estadoAfiliacion/**",
+        ],
       },
     ),
   },
