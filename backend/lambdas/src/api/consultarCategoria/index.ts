@@ -8,8 +8,7 @@ interface consultarCategoriaI {
 
 interface consultarCategoriaResponseI {
   trb_codigo: string;
-  trb_estado: string;
-  trb_estado_texto: string;
+  trb_categoria: string;
   trb_identificacion: string;
 }
 
