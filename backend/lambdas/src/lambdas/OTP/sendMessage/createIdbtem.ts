@@ -1,7 +1,7 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
-import { CustomError } from "../../class/customError";
-import { globalEnv } from "../../utils/globalEnv";
+import { CustomError } from "../../../class/customError";
+import { globalEnv } from "../../../utils/globalEnv";
 
 interface OtpItem {
   phoneNumber: string;
@@ -12,11 +12,12 @@ interface OtpItem {
 export const createOtpItem = async (phoneNumber: string, otp: string): Promise<void> => {
   const client = new DynamoDBClient({});
   const docClient = DynamoDBDocumentClient.from(client);
+  const { dynamoDbTable } = globalEnv();
 
   // Verificar si el número ya está verificado
   const existingItem = await docClient.send(
     new GetCommand({
-      TableName: globalEnv.dynamoDbTable!,
+      TableName: dynamoDbTable,
       Key: { phoneNumber },
     })
   );
@@ -34,7 +35,7 @@ export const createOtpItem = async (phoneNumber: string, otp: string): Promise<v
 
   await docClient.send(
     new PutCommand({
-      TableName: globalEnv.dynamoDbTable!,
+      TableName: dynamoDbTable,
       Item: item,
     })
   );

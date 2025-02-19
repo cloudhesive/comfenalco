@@ -1,5 +1,5 @@
 import { SNSClient, PublishCommand } from "@aws-sdk/client-sns";
-import { CustomError } from "../../class/customError";
+import { CustomError } from "../../../class/customError";
 
 export const sendMessage = async (phone: string, message: string) => {
   try {

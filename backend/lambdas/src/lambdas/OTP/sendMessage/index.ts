@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from "aws-lambda";
-import { errorResponse } from "../../utils/errorResponse";
+import { errorResponse } from "../../../utils/errorResponse";
 import { createOtpItem } from "./createIdbtem";
 import { sendMessage } from "./sendMessage";
 
