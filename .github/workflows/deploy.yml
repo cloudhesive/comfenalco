@@ -27,14 +27,6 @@ jobs:
       - name: Install dependencies (root)
         run: pnpm install --frozen-lockfile
 
-      - name: Build Backend
-        working-directory: ./backend
-        run: pnpm build
-
-      - name: Install dependencies (infra)
-        working-directory: ./infra
-        run: pnpm install --frozen-lockfile
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
