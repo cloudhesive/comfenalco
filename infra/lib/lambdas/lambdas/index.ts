@@ -97,7 +97,7 @@ export const lambdas = ({ dynamoDBTableName }: LambdaConfigProps): LambdaConfig[
     name: "OTPFunction",
     description: "Lambda para envio de OTP",
     runtime: aws_lambda.Runtime.NODEJS_22_X,
-    handler: "lambdas/OTP/index.handler",
+    handler: "lambdas/OTP/sendMessage/index.handler",
     code: aws_lambda.Code.fromAsset(path.join(__dirname, "../../../../backend/build/"), {
       exclude: [
         "lambdas/verificarContacto/**",
