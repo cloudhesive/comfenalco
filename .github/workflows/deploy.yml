@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: dev  # 👈 Asegura que se usen los secretos del entorno correcto
 
     steps:
       - name: Checkout repository
@@ -36,8 +37,7 @@ jobs:
 
       - name: Verify AWS authentication
         run: aws sts get-caller-identity
-     
+
       - name: Build CDK
         working-directory: ./infra
         run: pnpm build
-
