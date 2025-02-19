@@ -17,7 +17,7 @@ export const verifiedMessage = async (phone: string, otp: string) => {
     });
 
     const response = await docClient.send(command);
-    if (response.Item?.verifiedStatus) {
+    if (response.Item?.verifiedStatus === "true") {
       throw new CustomError("El número ya ha sido verificado", 400);
     }
     const commandUpdate = new UpdateCommand({
@@ -29,6 +29,9 @@ export const verifiedMessage = async (phone: string, otp: string) => {
     await docClient.send(commandUpdate);
     return { message: "Número verificado exitosamente" };
   } catch (error) {
+    if (error instanceof CustomError) {
+      throw error;
+    }
     throw new CustomError("Error al verificar el número", 500);
   }
 };
