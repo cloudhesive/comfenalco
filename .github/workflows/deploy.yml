@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - dev
-    paths:
-      - 'infra/**'
-      - 'backend/**'
 
 jobs:
   deploy:
