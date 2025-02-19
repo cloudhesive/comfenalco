@@ -38,6 +38,5 @@ jobs:
       - name: Verify AWS authentication
         run: aws sts get-caller-identity
 
-      - name: Build CDK
-        working-directory: ./infra
+      - name: Build lambdas
         run: pnpm build
