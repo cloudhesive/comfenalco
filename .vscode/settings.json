@@ -1,0 +1,5 @@
+{
+    "jest.jestCommandLine": "cd backend && npx jest", // Comando para ejecutar Jest
+    "jest.rootPath": "./", // Asegúrate de apuntar a la raíz del workspace
+    "typescript.tsdk": "node_modules/typescript/lib" // Apunta a TypeScript local
+}

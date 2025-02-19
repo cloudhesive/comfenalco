@@ -15,6 +15,7 @@ const registrarHuella = async ({ id_llamada, identificacion, menu_id, tipo_ident
         body: raw,
         redirect: "follow",
         headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
     };
@@ -23,10 +24,10 @@ const registrarHuella = async ({ id_llamada, identificacion, menu_id, tipo_ident
         if (!response.ok) {
             throw new customError_1.CustomError("Error al registrar huella", 400);
         }
-        const registrado = await response.json();
-        return registrado;
+        return true;
     }
     catch (error) {
+        console.error(error);
         if (error instanceof customError_1.CustomError) {
             throw new customError_1.CustomError(error.message, error.statusCode);
         }
