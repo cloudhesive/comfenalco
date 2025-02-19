@@ -1,9 +1,18 @@
 {
   "app": "npx ts-node --prefer-ts-exts bin/infra.ts",
-  "profile": "comfenalco",
   "watch": {
     "include": ["**"],
-    "exclude": ["README.md", "cdk*.json", "**/*.d.ts", "**/*.js", "tsconfig.json", "package*.json", "yarn.lock", "node_modules", "test"]
+    "exclude": [
+      "README.md",
+      "cdk*.json",
+      "**/*.d.ts",
+      "**/*.js",
+      "tsconfig.json",
+      "package*.json",
+      "yarn.lock",
+      "node_modules",
+      "test"
+    ]
   },
   "context": {
     "@aws-cdk/aws-lambda:recognizeLayerVersion": true,
