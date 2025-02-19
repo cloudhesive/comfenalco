@@ -12,6 +12,7 @@ interface LambdaConfigProps {
 }
 
 export const lambdas = ({ dynamoDBTableName }: LambdaConfigProps): LambdaConfig[] => [
+  //VerificarContactoFunction
   {
     name: "VerificarContactoFunction",
     description: "Lambda para verificar el contacto",
@@ -27,6 +28,7 @@ export const lambdas = ({ dynamoDBTableName }: LambdaConfigProps): LambdaConfig[
       ],
     }),
   },
+  //HabeasDataFunction
   {
     name: "HabeasDataFunction",
     description: "Lambda para Registro de llamadas",
@@ -42,6 +44,7 @@ export const lambdas = ({ dynamoDBTableName }: LambdaConfigProps): LambdaConfig[
       ],
     }),
   },
+  //EstadoAfiliacionFunction
   {
     name: "EstadoAfiliacionFunction",
     description: "Lambda para retornar el estado del afiliado",
@@ -57,6 +60,7 @@ export const lambdas = ({ dynamoDBTableName }: LambdaConfigProps): LambdaConfig[
       ],
     }),
   },
+  //CategoriaAfiliacionFunction
   {
     name: "CategoriaAfiliacionFunction",
     description: "Lambda para retornar la categoria del afiliado",
@@ -72,6 +76,7 @@ export const lambdas = ({ dynamoDBTableName }: LambdaConfigProps): LambdaConfig[
       ],
     }),
   },
+  //SubsidiosPendientesFunction
   {
     name: "SubsidiosPendientesFunction",
     description: "Lambda para retornar la categoria del afiliado",
@@ -87,6 +92,7 @@ export const lambdas = ({ dynamoDBTableName }: LambdaConfigProps): LambdaConfig[
       ],
     }),
   },
+  //OTPFunction
   {
     name: "OTPFunction",
     description: "Lambda para envio de OTP",
@@ -99,6 +105,29 @@ export const lambdas = ({ dynamoDBTableName }: LambdaConfigProps): LambdaConfig[
         "lambdas/estadoAfiliacion/**",
         "lambdas/categoriaAfiliacion/**",
         "lambdas/subsidioPendiente/**",
+        "lambdas/OTP/verifiedMessage/**",
+      ],
+    }),
+    resources: ["*"],
+    actions: ["dynamodb:GetItem", "dynamodb:PutItem", "dynamodb:UpdateItem", "sns:Publish"],
+    environment: {
+      DYNAMO_DB_TABLE: dynamoDBTableName,
+    },
+  },
+  //VerifiedOTPFunction
+  {
+    name: "VerifiedOTPFunction",
+    description: "Lambda para verificar el OTP",
+    runtime: aws_lambda.Runtime.NODEJS_22_X,
+    handler: "lambdas/OTP/verifiedMessage/index.handler",
+    code: aws_lambda.Code.fromAsset(path.join(__dirname, "../../../../backend/build/"), {
+      exclude: [
+        "lambdas/verificarContacto/**",
+        "lambdas/habeasData/**",
+        "lambdas/estadoAfiliacion/**",
+        "lambdas/categoriaAfiliacion/**",
+        "lambdas/subsidioPendiente/**",
+        "lambdas/OTP/sendMessage/**",
       ],
     }),
     resources: ["*"],
