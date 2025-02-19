@@ -30,17 +30,21 @@ export const registrarHuella = async ({
     body: raw,
     redirect: "follow",
     headers: {
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
   };
   try {
-    const response = await fetch("https://comfenalcoquindio.online:9090/api/comfenalco/registrar_huella", requestOptions);
+    const response = await fetch(
+      "https://comfenalcoquindio.online:9090/api/comfenalco/registrar_huella",
+      requestOptions
+    );
     if (!response.ok) {
       throw new CustomError("Error al registrar huella", 400);
     }
-    const registrado = await response.json();
-    return registrado;
+    return true;
   } catch (error) {
+    console.error(error);
     if (error instanceof CustomError) {
       throw new CustomError(error.message, error.statusCode);
     }

@@ -6,11 +6,18 @@ const errorResponse_1 = require("../../utils/errorResponse");
 const login_1 = require("../../auth/login");
 const registrarHuella_1 = require("../../api/registrarHuella/registrarHuella");
 const validarEvento = (event) => {
-    const { id_llamada, identificacion, menu_id, tipo_identificacion, tratamiento_dato_id } = JSON.parse(event.body || "{}");
-    if (!id_llamada || !identificacion || !menu_id || !tipo_identificacion || !tratamiento_dato_id) {
+    const data = JSON.parse(event.body || "{}");
+    const requiredFields = [
+        "id_llamada",
+        "identificacion",
+        "menu_id",
+        "tipo_identificacion",
+        "tratamiento_dato_id",
+    ];
+    if (requiredFields.some((field) => data[field] === undefined || data[field] === null)) {
         throw new customError_1.CustomError("Faltan datos", 400);
     }
-    return { id_llamada, identificacion, menu_id, tipo_identificacion, tratamiento_dato_id };
+    return data;
 };
 const handler = async (event, context) => {
     try {
@@ -30,6 +37,7 @@ const handler = async (event, context) => {
         };
     }
     catch (error) {
+        console.error(error);
         return (0, errorResponse_1.errorResponse)(error);
     }
 };
