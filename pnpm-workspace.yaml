@@ -1,4 +1,5 @@
 packages:
   - backend/lambdas
+  - backend/campaigns
   - infra
   - test
