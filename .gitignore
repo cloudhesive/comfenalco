@@ -3,3 +3,4 @@ node_modules
 coverage/
 backend/lambdas/dist
 backend/build/
+backend/build-*/

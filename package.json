@@ -15,6 +15,7 @@
   "description": "",
   "workspaces": [
     "backend/lambdas",
+    "backend/campaigns",
     "infra",
     "test"
   ]
