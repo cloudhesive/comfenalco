@@ -21,7 +21,7 @@ export class SecureBucket extends Construct {
       bucketName: `${id}-carga-listado-campaña`,
     });
 
-    const campaignsSQS = new Queue(this, `${id}-to-process-sqs`, {
+    const campaignSQS = new Queue(this, `${id}-to-process-sqs`, {
       // NOTE: Max delay 15 min
       deliveryDelay: Duration.minutes(5),
     });
