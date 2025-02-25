@@ -9,21 +9,29 @@ import {
   SqsEventSource,
 } from "aws-cdk-lib/aws-lambda-event-sources";
 import { Queue } from "aws-cdk-lib/aws-sqs";
-import { commonRootPath } from "./common";
+import { commonRootPath, toDashCase } from "./common";
 
 type Props = {
   encuestasResultsDB: { tableName: string; pkName: string };
-  lambdaConnect?: { batchSize?: number };
-  connectArn: string;
+  lambdaConnect?: {
+    batchSize?: number;
+    // NOTE: Value in seconds
+    // Max value: 300
+    maxBatchingWindow?: number;
+  };
+  connectArnPerService: { [key: string]: string };
 };
 
 export class DispararConnectBlock extends Construct {
+  public cargarListadoBucketName: string;
+
   constructor(scope: Construct, id: string, props: Props) {
     super(scope, id);
 
     const cargaListado = new Bucket(this, `${id}CargaListadoCampaignBucket`, {
-      bucketName: `${id}-carga-listado-campaign`,
+      bucketName: `${toDashCase(id)}-carga-listado-campaign`,
     });
+    this.cargarListadoBucketName = cargaListado.bucketName;
 
     const campaignSQS = new Queue(this, `${id}ProcessAndWaitSQS`, {
       // NOTE: Max delay 15 min
@@ -67,7 +75,7 @@ export class DispararConnectBlock extends Construct {
         memorySize: 128,
         timeout: Duration.seconds(10),
         environment: {
-          CONNECT_ARN: props.connectArn,
+          CONNECT_ARN_PER_SERVICE: JSON.stringify(props.connectArnPerService),
           DYNAMO_TABLE_NAME: props.encuestasResultsDB.tableName,
           DYNAMO_TABLE_PK_NAME: props.encuestasResultsDB.pkName,
         },
@@ -77,6 +85,12 @@ export class DispararConnectBlock extends Construct {
     disparaConnect.addEventSource(
       new SqsEventSource(campaignSQS, {
         batchSize: props?.lambdaConnect?.batchSize ?? 10,
+        maxBatchingWindow:
+          props?.lambdaConnect?.maxBatchingWindow !== undefined
+            ? Duration.seconds(
+                Math.min(props?.lambdaConnect?.maxBatchingWindow, 300),
+              )
+            : undefined,
       }),
     );
   }

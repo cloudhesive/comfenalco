@@ -2,11 +2,11 @@ import { Construct } from "constructs";
 import { GuardarDescargaDatosBlock } from "../shared/guardar-descargar-datos-block";
 import { DispararConnectBlock } from "../shared/disparar-connect-block";
 import { CfnOutput } from "aws-cdk-lib";
-import config from "../config/multi-connect";
+import config from "../config/single-connect";
 
 type Props = {};
 
-export class MultiConnectFlow extends Construct {
+export class SingleConnectFlow extends Construct {
   constructor(scope: Construct, id: string, props?: Props) {
     super(scope, id);
 
