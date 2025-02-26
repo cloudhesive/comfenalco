@@ -8,7 +8,6 @@ export const getFile = async (
   key: string,
 ): Promise<S3Response> => {
   try {
-    // NOTE: Get file from s3
     const listaUsuariosFile = await s3Client.getObject({
       Bucket: bucket,
       Key: key,

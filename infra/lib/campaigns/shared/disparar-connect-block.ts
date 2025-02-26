@@ -1,7 +1,6 @@
 import { Bucket, EventType } from "aws-cdk-lib/aws-s3";
 import { Function as LambdaFunction } from "aws-cdk-lib/aws-lambda";
 import { Construct } from "constructs";
-// import config from "./config";
 import { aws_lambda, Duration } from "aws-cdk-lib";
 import * as path from "node:path";
 import {
@@ -85,6 +84,7 @@ export class DispararConnectBlock extends Construct {
     disparaConnect.addEventSource(
       new SqsEventSource(campaignSQS, {
         batchSize: props?.lambdaConnect?.batchSize ?? 10,
+        reportBatchItemFailures: true,
         maxBatchingWindow:
           props?.lambdaConnect?.maxBatchingWindow !== undefined
             ? Duration.seconds(
