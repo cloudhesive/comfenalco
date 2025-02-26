@@ -1,31 +1,31 @@
+import { PutCommand } from "@aws-sdk/lib-dynamodb";
 import { DynamoResponse } from "./errors";
 import { DynamoDB, DynamoDBServiceException } from "@aws-sdk/client-dynamodb";
 
 const DYNAMO_TABLE_NAME = process.env.CONNECT_ARN_PER_SERVICE;
-const DYNAMO_TABLE_PK_NAME = process.env.CONNECT_ARN_PER_SERVICE ?? "";
 
 const dynamodbClient = new DynamoDB({ region: process.env.AWS_REGION });
 
-export const getItem = async (key: string): Promise<DynamoResponse> => {
+export const putItem = async (new_values: {
+  [key: string]: string;
+}): Promise<DynamoResponse> => {
   try {
-    const response = await dynamodbClient.getItem({
-      TableName: DYNAMO_TABLE_NAME,
-      Key: {
-        [DYNAMO_TABLE_PK_NAME]: {
-          S: key,
-        },
-      },
-    });
+    const response = await dynamodbClient.send(
+      new PutCommand({
+        TableName: DYNAMO_TABLE_NAME,
+        Item: new_values,
+      }),
+    );
 
-    if (response.Item === undefined) {
+    if (response.Attributes === undefined) {
       return { res: null };
     }
 
     const item = [];
-    for (const key in response.Item) {
-      item.push([key, response.Item[key].S]);
+    for (const key in response.Attributes) {
+      item.push([key, response.Attributes[key].S]);
     }
-    console.debug("Item's content: %s", JSON.stringify(item, null, 4));
+    console.debug("Item's updated content: %s", JSON.stringify(item, null, 4));
     return { res: Object.fromEntries(item) };
   } catch (error: unknown) {
     if (error instanceof DynamoDBServiceException) {
