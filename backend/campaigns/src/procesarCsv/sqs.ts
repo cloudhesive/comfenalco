@@ -1,11 +1,7 @@
-import {
-  SendMessageCommand,
-  SQSClient,
-  SQSServiceException,
-} from "@aws-sdk/client-sqs";
+import { SQSServiceException, SQS } from "@aws-sdk/client-sqs";
 import { SqsResponse } from "./errors";
 
-const sqsClient = new SQSClient({ region: process.env.AWS_REGION });
+const sqsClient = new SQS({ region: process.env.AWS_REGION });
 const SQS_URL = process.env.SQS_URL;
 
 export const sendToQueue = async (msg: string): Promise<SqsResponse> => {
@@ -13,12 +9,11 @@ export const sendToQueue = async (msg: string): Promise<SqsResponse> => {
     if (SQS_URL === undefined) {
       throw new Error("The url of the queue is undefined", { cause: "SQS" });
     }
-    const response = await sqsClient.send(
-      new SendMessageCommand({
-        QueueUrl: SQS_URL,
-        MessageBody: msg,
-      }),
-    );
+
+    const response = await sqsClient.sendMessage({
+      QueueUrl: SQS_URL,
+      MessageBody: msg,
+    });
 
     if (response.MessageId === undefined) {
       throw new Error("The response comes with msg id undefined", {

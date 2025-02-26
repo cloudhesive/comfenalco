@@ -6,10 +6,10 @@ const csvSeparator = process.env.CSV_SEPARATOR ?? ";";
 
 export const handler = async (event: S3Event): Promise<any> => {
   const errorListRecords = [];
-  console.log("Records to process: %d", event.Records.length);
+  console.info("Records to process: %d", event.Records.length);
   for (let recordIndex = 0; recordIndex < event.Records.length; recordIndex++) {
     const record = event.Records[recordIndex];
-    console.log("Processing record ... (%d)", recordIndex + 1);
+    console.info("Processing record ... (%d)", recordIndex + 1);
     try {
       const { res: fileString, err: fileError } = await getFile(
         record.s3.bucket.name,
@@ -38,12 +38,12 @@ export const handler = async (event: S3Event): Promise<any> => {
       const headersList = headers.trim().split(csvSeparator);
 
       const errorListSending = [];
-      console.log(
+      console.info(
         "Usuarios encontrados en el archivo: %d",
         event.Records.length,
       );
       for (let idx = 0; idx < listaUsuarios.length; idx++) {
-        console.log("Enviando a la cola ... (%d)", idx + 1);
+        console.info("Enviando a la cola ... (%d)", idx + 1);
         const line = listaUsuarios[idx];
         const lineObj = Object.fromEntries(
           line

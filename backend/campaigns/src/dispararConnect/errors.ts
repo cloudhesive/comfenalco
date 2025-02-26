@@ -7,12 +7,22 @@ export interface SingleError extends RecordError {
   line: number;
 }
 
-export type SqsResponse = {
-  res: string;
-  err?: undefined;
-} | {
-  res?: undefined;
-  err: RecordError;
-}
+export type DynamoResponse =
+  | {
+      res: { [key: string]: string } | null;
+      err?: undefined;
+    }
+  | {
+      res?: undefined;
+      err: RecordError;
+    };
 
-export type S3Response = SqsResponse;
+export type ConnectResponse =
+  | {
+      res: string;
+      err?: undefined;
+    }
+  | {
+      res?: undefined;
+      err: RecordError;
+    };
