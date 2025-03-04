@@ -6,6 +6,7 @@ const connectClient = new Connect({ region: process.env.AWS_REGION });
 const CONNECT_ARN_PER_SERVICE = JSON.parse(
   process.env.CONNECT_ARN_PER_SERVICE ?? "{}",
 );
+const INSTANCE_ID = "7b753c00-ae4c-4fd8-94db-aabf34d535ed";
 
 export const invokeConnect = async (
   phoneNumber: string,
@@ -13,9 +14,8 @@ export const invokeConnect = async (
 ): Promise<ConnectResponse> => {
   try {
     const response = await connectClient.startOutboundVoiceContact({
-      InstanceId: "",
-      ContactFlowId: "",
-      QueueId: "",
+      InstanceId: "mismo",
+      ContactFlowId: "cambia",
       DestinationPhoneNumber: phoneNumber,
       Attributes: {
         nombre_completo: userName,

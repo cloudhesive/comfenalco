@@ -3,7 +3,7 @@ export interface RecordError {
   msg: string;
 }
 
-export interface SingleError extends RecordError {
+export interface LineError extends RecordError {
   line: number;
 }
 

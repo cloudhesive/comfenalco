@@ -8,9 +8,9 @@ export class CampaingStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    new MultiConnectFlow(this, `${id}MultiConnectFlow`);
-    // new SingleConnectFlow(this, `${id}SingleConnectFlow`);
-    // new SaveOnlyFlow(this, `${id}SaveOnlyFlow`);
+    new MultiConnectFlow(this, `${id}MultiFlow`);
+    // new SingleConnectFlow(this, `${id}SingleFlow`);
+    // new SaveOnlyFlow(this, `${id}SaveFlow`);
   }
 }
 

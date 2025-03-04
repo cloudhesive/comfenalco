@@ -22,7 +22,7 @@ export const handler = async (): Promise<any> => {
     }
 
     const filename = "/tmp/report.csv";
-    buildFile(items, filename);
+    await buildFile(items, filename);
 
     const { err: errS3 } = await putFile(
       `reporte_s3/${dateReport.split("T")[0]}/reporte.csv`,

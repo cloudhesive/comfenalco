@@ -31,7 +31,7 @@ export class GuardarDescargaDatosBlock extends Construct {
       {
         runtime: aws_lambda.Runtime.NODEJS_22_X,
         description: "Lambda que guarda los datos de la encuesta en dynamo",
-        functionName: `${id}GuardarDatosEncuesta`,
+        functionName: `${id}GuardarDatos`,
         handler: "index.handler",
         code: aws_lambda.Code.fromAsset(
           path.join(__dirname, commonRootPath, "guardaDatosEncuesta/"),

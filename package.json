@@ -5,8 +5,10 @@
   "scripts": {
     "test": "pnpm --recursive run test",
     "build": "pnpm --recursive run build",
-    "test:backend": "pnpm --filter backendcl test",
+    "test:backend": "pnpm --filter backend test",
+    "test:campaigns": "pnpm --filter campaigns test",
     "build:backend": "pnpm --filter backend build",
+    "build:campaigns": "pnpm --filter campaigns test",
     "build:infra": "pnpm --filter infra build"
   },
   "keywords": [],

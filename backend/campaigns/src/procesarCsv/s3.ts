@@ -1,4 +1,4 @@
-import { S3, InvalidObjectState } from "@aws-sdk/client-s3";
+import { S3, S3ServiceException } from "@aws-sdk/client-s3";
 import { S3Response } from "./errors";
 
 const s3Client = new S3({ region: process.env.AWS_REGION });
@@ -23,7 +23,7 @@ export const getFile = async (
     console.debug("Contenido del archivo: %s", fileString);
     return { res: fileString };
   } catch (error: unknown) {
-    if (error instanceof InvalidObjectState) {
+    if (error instanceof S3ServiceException) {
       return {
         err: {
           error: error.name,
