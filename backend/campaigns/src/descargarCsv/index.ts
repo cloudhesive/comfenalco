@@ -1,12 +1,12 @@
-import type { ConnectContactFlowEvent } from "aws-lambda";
 import { RecordError } from "./errors";
 import { getAllItemsDb } from "./dynamodb";
 import { buildFile } from "./utils";
 import { putFile } from "./s3";
 
-export const handler = async (event: ConnectContactFlowEvent): Promise<any> => {
+export const handler = async (): Promise<any> => {
   let errorInHandler: RecordError | undefined;
-  console.info("Creating csv report (%s)", new Date().toISOString());
+  const dateReport = new Date().toISOString();
+  console.info("Creating csv report (%s)", dateReport);
   try {
     const { res: items, err } = await getAllItemsDb();
     if (err) {
@@ -21,10 +21,13 @@ export const handler = async (event: ConnectContactFlowEvent): Promise<any> => {
       return;
     }
 
-    const filename = "report.csv";
+    const filename = "/tmp/report.csv";
     buildFile(items, filename);
 
-    const { err: errS3 } = await putFile("reporte_s3/reporte.csv", filename);
+    const { err: errS3 } = await putFile(
+      `reporte_s3/${dateReport.split("T")[0]}/reporte.csv`,
+      filename,
+    );
     if (errS3) {
       console.error(
         "Error with file upload to s3: %s",
@@ -53,8 +56,7 @@ export const handler = async (event: ConnectContactFlowEvent): Promise<any> => {
   }
   if (errorInHandler !== undefined) {
     console.error(
-      "Error processing download event (%s): %s",
-      event.Name,
+      "Error processing download event (Descargar csv): %s",
       JSON.stringify(errorInHandler, null, 4),
     );
   }

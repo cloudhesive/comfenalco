@@ -38,7 +38,6 @@ export const buildFile = async (
       })
       .join("\n");
 
-  filename = "saved_from_db.csv";
   const writableStream = fs.createWriteStream(filename, { autoClose: true });
 
   writableStream.write(csvContent);
