@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: prod  # 👈 Asegura que se usen los secretos del entorno correcto
+    environment: dev  # 👈 Asegura que se usen los secretos del entorno correcto
 
     steps:
       - name: Checkout repository
