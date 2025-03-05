@@ -1,15 +1,21 @@
 {
   "name": "comfenalco",
   "version": "1.0.0",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "test:backend": "pnpm --filter backend test",
+    "test": "pnpm --recursive run test",
+    "build": "pnpm --recursive run build",
+    "test:backend": "pnpm --filter backendcl test",
     "build:backend": "pnpm --filter backend build",
-    "build:infra": "pnpm --filter infra build",
-    "build": "pnpm build:backend && pnpm build:infra"
+    "build:infra": "pnpm --filter infra build"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "workspaces": [
+    "backend/lambdas",
+    "infra",
+    "test"
+  ]
 }
