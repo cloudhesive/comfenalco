@@ -19,7 +19,7 @@ export class CampaignsFlow extends Construct {
       runtime: aws_lambda.Runtime.NODEJS_22_X,
       description:
         "Lambda que procesa el listado de campañas y las encola para ser ejecutadas las encuestas",
-      functionName: `${id}ProcesarCsv`,
+      functionName: `${id}ProcesarCsvFromS3`,
       handler: "index.handler",
       code: aws_lambda.Code.fromAsset(
         path.join(__dirname, commonRootPath, "procesarCsvS3/"),

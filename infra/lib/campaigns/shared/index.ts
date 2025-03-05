@@ -36,8 +36,8 @@ export class SharedResourcesBlock extends Construct {
   constructor(scope: Construct, id: string, props: Props) {
     super(scope, id);
 
-    const cargaListado = new Bucket(this, `${id}CargaListadoCampaignBucket`, {
-      bucketName: `${toDashCase(id)}-carga-listado-campaign`,
+    const cargaListado = new Bucket(this, `${id}CargaListadoBucket`, {
+      bucketName: `${toDashCase(id)}-carga-listado`,
     });
 
     const campaignSQS = new Queue(this, `${id}ProcessAndWaitSQS`, {
@@ -46,7 +46,7 @@ export class SharedResourcesBlock extends Construct {
     });
 
     const resultsDB = new TableV2(this, `${id}ResultadosEncuestaDynamodb`, {
-      partitionKey: { name: this.pkName, type: AttributeType.STRING },
+      partitionKey: { name: props.pkName, type: AttributeType.STRING },
       tableName: `${id}ResultadosEncuesta`,
     });
 
@@ -91,7 +91,7 @@ export class SharedResourcesBlock extends Construct {
       {
         runtime: aws_lambda.Runtime.NODEJS_22_X,
         description: "Lambda que guarda los datos de la encuesta en dynamo",
-        functionName: `${id}GuardarDatos`,
+        functionName: `${id}GuardarEncuesta`,
         handler: "index.handler",
         code: aws_lambda.Code.fromAsset(
           path.join(__dirname, commonRootPath, "guardaDatosEncuesta/"),
@@ -109,7 +109,7 @@ export class SharedResourcesBlock extends Construct {
       this,
       `${id}ResultadosEncuestasBucket`,
       {
-        bucketName: `${toDashCase(id)}-resultados-encuestas-campaign`,
+        bucketName: `${toDashCase(id)}-resultados-encuestas`,
       },
     );
 

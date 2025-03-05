@@ -13,6 +13,6 @@ export class InfraStack extends cdk.Stack {
     //   dynamoDBTableName: dynamoDBStack.tableName,
     // });
 
-    new CampaingStack(this, `${id}CampaingStk`);
+    new CampaingStack(this, "CampaingStk");
   }
 }

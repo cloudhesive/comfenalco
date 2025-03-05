@@ -3,5 +3,5 @@ export default {
     surveys: {},
     campaigns: {},
   },
-  pkName: "telefono",
+  pkName: "celular",
 };
