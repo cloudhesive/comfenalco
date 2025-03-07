@@ -1,22 +1,36 @@
 import { DynamoResponse } from "./errors";
 import { DynamoDB, DynamoDBServiceException } from "@aws-sdk/client-dynamodb";
 
-const DYNAMO_TABLE_NAME = process.env.CONNECT_ARN_PER_SERVICE;
-const DYNAMO_TABLE_PK_NAME = process.env.CONNECT_ARN_PER_SERVICE ?? "";
+const DYNAMO_TABLE_NAME = process.env.DYNAMO_TABLE_NAME;
+const DYNAMO_TABLE_PK_NAME = process.env.DYNAMO_TABLE_PK_NAME ?? "";
 
 const dynamodbClient = new DynamoDB({ region: process.env.AWS_REGION });
 
 export const getItem = async (key: string): Promise<DynamoResponse> => {
   try {
-    const response = await dynamodbClient.getItem({
+    console.debug(
+      "Quering to table [%s], and key [%s]",
+      DYNAMO_TABLE_NAME,
+      DYNAMO_TABLE_PK_NAME,
+    );
+    const commandInput = {
       TableName: DYNAMO_TABLE_NAME,
       Key: {
         [DYNAMO_TABLE_PK_NAME]: {
           S: key,
         },
       },
-    });
+    };
+    console.debug(
+      "Object sent to get item command: %s",
+      JSON.stringify(commandInput, null, 4),
+    );
+    const response = await dynamodbClient.getItem(commandInput);
 
+    console.debug(
+      "Response from dynamo object: %s",
+      JSON.stringify(response, null, 4),
+    );
     if (response.Item === undefined) {
       return { res: null };
     }
@@ -49,6 +63,7 @@ export const getItem = async (key: string): Promise<DynamoResponse> => {
         err: {
           error: "Unhandled Error",
           msg: error.message,
+          stack: error.stack,
         },
       };
     }

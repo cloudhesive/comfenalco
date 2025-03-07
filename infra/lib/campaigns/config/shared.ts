@@ -3,5 +3,6 @@ export default {
     surveys: {},
     campaigns: {},
   },
-  pkName: "celular",
+  pkName: "CELULAR",
+  maxRetriesFailed: 5,
 };

@@ -1,7 +1,7 @@
 import { Bucket } from "aws-cdk-lib/aws-s3";
 import { Function as LambdaFunction } from "aws-cdk-lib/aws-lambda";
 import { Construct } from "constructs";
-import { aws_lambda, CfnOutput, Duration } from "aws-cdk-lib";
+import { aws_lambda, CfnOutput, Duration, RemovalPolicy } from "aws-cdk-lib";
 import * as path from "node:path";
 import { SqsEventSource } from "aws-cdk-lib/aws-lambda-event-sources";
 import { Queue } from "aws-cdk-lib/aws-sqs";
@@ -9,7 +9,6 @@ import { commonRootPath, toDashCase } from "./common";
 import { AttributeType, TableV2 } from "aws-cdk-lib/aws-dynamodb";
 
 type Props = {
-  // encuestasResultsDB: { tableName: string; pkName: string };
   lambdaConnect?: {
     batchSize?: number;
     // NOTE: Value in seconds
@@ -21,6 +20,7 @@ type Props = {
     campaigns: { [key: string]: string };
   };
   pkName: string;
+  maxRetriesFailed: number;
 };
 
 export class SharedResourcesBlock extends Construct {
@@ -32,6 +32,7 @@ export class SharedResourcesBlock extends Construct {
   public tableName: string;
 
   public cargarListadoBucket: Bucket;
+  public queueForCalls: Queue;
 
   constructor(scope: Construct, id: string, props: Props) {
     super(scope, id);
@@ -40,14 +41,27 @@ export class SharedResourcesBlock extends Construct {
       bucketName: `${toDashCase(id)}-carga-listado`,
     });
 
-    const campaignSQS = new Queue(this, `${id}ProcessAndWaitSQS`, {
+    const campaignSQSDLQ = new Queue(this, `${id}ProcessAndWaitSQS_DLQ`, {
+      queueName: `${id}ProcessAndWaitSQS_DLQ`,
       // NOTE: Max delay 15 min
-      deliveryDelay: Duration.minutes(5),
+      deliveryDelay: Duration.millis(0),
+      retentionPeriod: Duration.days(14),
+    });
+
+    const campaignSQS = new Queue(this, `${id}ProcessAndWaitSQS`, {
+      queueName: `${id}ProcessAndWaitSQS`,
+      // NOTE: Max delay 15 min
+      // deliveryDelay: Duration.minutes(5),
+      deadLetterQueue: {
+        maxReceiveCount: props.maxRetriesFailed,
+        queue: campaignSQSDLQ,
+      },
     });
 
     const resultsDB = new TableV2(this, `${id}ResultadosEncuestaDynamodb`, {
       partitionKey: { name: props.pkName, type: AttributeType.STRING },
-      tableName: `${id}ResultadosEncuesta`,
+      tableName: `${id}SurveysResults`,
+      removalPolicy: RemovalPolicy.DESTROY,
     });
 
     const disparaConnect = new LambdaFunction(
@@ -84,6 +98,10 @@ export class SharedResourcesBlock extends Construct {
             : undefined,
       }),
     );
+
+    if (disparaConnect.role) {
+      resultsDB.grantReadData(disparaConnect.role);
+    }
 
     const guardaDatosEncuesta = new LambdaFunction(
       this,
@@ -135,6 +153,7 @@ export class SharedResourcesBlock extends Construct {
     this.descargarCsvLambdaArn = descargarCsv.functionArn;
     this.cargarListadoBucketName = cargaListado.bucketName;
     this.cargarListadoBucket = cargaListado;
+    this.queueForCalls = campaignSQS;
     this.sqsUrl = campaignSQS.queueUrl;
     this.pkName = props.pkName;
     this.tableName = resultsDB.tableName;

@@ -27,6 +27,7 @@
     "@aws-sdk/client-connect": "^3.751.0",
     "@aws-sdk/client-dynamodb": "^3.750.0",
     "@aws-sdk/client-s3": "^3.750.0",
+    "@aws-sdk/client-secrets-manager": "^3.758.0",
     "@aws-sdk/client-sqs": "^3.750.0",
     "@aws-sdk/lib-dynamodb": "^3.750.0",
     "aws-sdk": "^2.1531.0"

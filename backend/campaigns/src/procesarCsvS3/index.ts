@@ -31,13 +31,15 @@ export const handler = async (event: S3Event): Promise<any> => {
           const { err } = await sendToQueue(JSON.stringify(lineObj));
           if (err !== undefined) {
             errorListSending.push({ ...err, line: idx + 1 });
+          } else {
+            console.info("Objeto (%d) enviado a la cola", idx);
           }
         },
       );
 
       if (errorListSending.length) {
         console.error(
-          "Error enviando a la cola (%d): %s",
+          "Error enviando a la cola (count: %d): %s",
           errorListSending.length,
           JSON.stringify(errorListSending, null, 4),
         );

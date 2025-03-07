@@ -6,7 +6,7 @@ import type {
 import { getItem } from "./dynamodb";
 import { invokeConnect } from "./connect";
 
-const DYNAMO_TABLE_PK_NAME = process.env.CONNECT_ARN_PER_SERVICE ?? "";
+const DYNAMO_TABLE_PK_NAME = process.env.DYNAMO_TABLE_PK_NAME ?? "";
 
 const NAME_TABLE_MAPPING = JSON.parse(
   process.env.NAME_TABLE_MAPPING ?? "null",
@@ -24,19 +24,25 @@ export const handler = async (event: SQSEvent): Promise<SQSBatchResponse> => {
     console.info("Processing record ... (%d)", recordIndex + 1);
     try {
       const dataObj: { [key: string]: string } = JSON.parse(record.body);
+      console.debug("Mensaje recibido %s", JSON.stringify(dataObj, null, 4));
+      if (!Object.keys(dataObj).includes(DYNAMO_TABLE_PK_NAME)) {
+        console.error(
+          "Key [%s], not present in obj: (%s)",
+          DYNAMO_TABLE_PK_NAME,
+          JSON.stringify(dataObj, null, 4),
+        );
+        continue;
+      }
       const { res: item, err } = await getItem(dataObj[DYNAMO_TABLE_PK_NAME]);
       if (err) {
         console.error(
-          "Error processing record (%d), while getting item from dynamodb: %s",
+          "Error processing record (%d), while getting item from dynamodb:\nName: %s\nDescription: %s\nStack: %s",
           recordIndex + 1,
-          JSON.stringify(err, null, 4),
+          err.error,
+          err.msg,
+          err.stack ?? "Empty",
         );
         batchItemFailures.push({ itemIdentifier: record.messageId });
-        errorListRecords.push({
-          error: err.error,
-          msg: err.msg,
-          messageId: record.messageId,
-        });
         continue;
       }
 
@@ -53,11 +59,6 @@ export const handler = async (event: SQSEvent): Promise<SQSBatchResponse> => {
           JSON.stringify(err, null, 4),
         );
         batchItemFailures.push({ itemIdentifier: record.messageId });
-        errorListRecords.push({
-          error: errConnect.error,
-          msg: errConnect.msg,
-          messageId: record.messageId,
-        });
         continue;
       }
     } catch (error: unknown) {
@@ -87,7 +88,7 @@ export const handler = async (event: SQSEvent): Promise<SQSBatchResponse> => {
   }
   if (errorListRecords.length) {
     console.error(
-      "Error processing multiple requests (%d): %s",
+      "Error processing multiple requests (Not handled) (%d): %s",
       errorListRecords.length,
       JSON.stringify(errorListRecords, null, 4),
     );

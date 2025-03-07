@@ -1,4 +1,4 @@
-import { parseCsv } from "../../src/procesarCsv/utils";
+import { parseCsv } from "../../src/procesarCsvS3/utils";
 import fs from "node:fs";
 import * as path from "node:path";
 import dataExpected from "./fileExpected";

@@ -1,4 +1,4 @@
-import { sendToQueue } from "../../src/procesarCsv/sqs";
+import { sendToQueue } from "../../src/procesarCsvS3/sqs";
 import dataExpected from "./fileExpected";
 
 describe("Sending file to queue ...", () => {

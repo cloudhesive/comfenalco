@@ -5,10 +5,11 @@ import * as path from "node:path";
 import { commonRootPath } from "../shared/common";
 import { S3EventSource } from "aws-cdk-lib/aws-lambda-event-sources";
 import { Bucket, EventType } from "aws-cdk-lib/aws-s3";
+import { Queue } from "aws-cdk-lib/aws-sqs";
 
 type Props = {
-  sqsUrl: string;
   loadBucket: Bucket;
+  queueToSend: Queue;
 };
 
 export class CampaignsFlow extends Construct {
@@ -27,7 +28,7 @@ export class CampaignsFlow extends Construct {
       memorySize: 128,
       timeout: Duration.seconds(10),
       environment: {
-        SQS_URL: props.sqsUrl,
+        SQS_URL: props.queueToSend.queueUrl,
       },
     });
 
@@ -41,5 +42,10 @@ export class CampaignsFlow extends Construct {
         ],
       }),
     );
+
+    if (procesarCsvS3.role) {
+      props.loadBucket.grantRead(procesarCsvS3.role);
+      props.queueToSend.grantSendMessages(procesarCsvS3.role);
+    }
   }
 }

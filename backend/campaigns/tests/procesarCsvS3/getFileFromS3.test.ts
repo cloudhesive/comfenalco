@@ -1,6 +1,6 @@
 import path from "node:path";
 import fs from "node:fs";
-import { getFile } from "../../src/procesarCsv/s3";
+import { getFile } from "../../src/procesarCsvS3/s3";
 
 describe("Get file from s3 ...", () => {
   const OLD_ENV = process.env;

@@ -15,14 +15,15 @@ export class CampaingStack extends cdk.Stack {
         // If maxBatchingWindow is configured, this value can go up to 10,000.
         batchSize: 10,
         // NOTE: Valid Range: Minimum value of 0. Maximum value of 300 (5 min in seconds).
-        maxBatchingWindow: undefined,
+        maxBatchingWindow: 30,
       },
       pkName: config.pkName,
+      maxRetriesFailed: config.maxRetriesFailed,
     });
 
     new CampaignsFlow(this, `${id}CampaignsFlow`, {
-      sqsUrl: sharedResources.sqsUrl,
       loadBucket: sharedResources.cargarListadoBucket,
+      queueToSend: sharedResources.queueForCalls,
     });
   }
 }

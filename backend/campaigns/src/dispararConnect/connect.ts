@@ -1,21 +1,26 @@
 import { Connect, ConnectServiceException } from "@aws-sdk/client-connect";
 import { ConnectResponse } from "./errors";
+import { getSecret } from "./secrets";
 
 const connectClient = new Connect({ region: process.env.AWS_REGION });
 
-const CONNECT_ARN_PER_SERVICE = JSON.parse(
-  process.env.CONNECT_ARN_PER_SERVICE ?? "{}",
-);
-const INSTANCE_ID = "7b753c00-ae4c-4fd8-94db-aabf34d535ed";
+// const INSTANCE_ID = "7b753c00-ae4c-4fd8-94db-aabf34d535ed";
 
 export const invokeConnect = async (
+  contactFlowId: string,
   phoneNumber: string,
   userName: string,
 ): Promise<ConnectResponse> => {
   try {
+    const { res: INSTANCE_ID, err } = await getSecret("", "INSTANCE_ID");
+    if (err) {
+      return { err };
+    }
     const response = await connectClient.startOutboundVoiceContact({
-      InstanceId: "mismo",
-      ContactFlowId: "cambia",
+      // NOTE: Se mantiene constante segun el flujo
+      InstanceId: INSTANCE_ID,
+      // NOTE: Cambia segun el flujo
+      ContactFlowId: contactFlowId,
       DestinationPhoneNumber: phoneNumber,
       Attributes: {
         nombre_completo: userName,
